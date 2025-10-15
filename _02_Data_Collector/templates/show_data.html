@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Data Records</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #007bff; color: white; }
+        tr:hover { background-color: #f5f5f5; }
+        .totals-row { background-color: #e9ecef; font-weight: bold; }
+        .btn { display: inline-block; background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 10px 5px; }
+        .empty { text-align: center; padding: 40px; color: #666; }
+        .size-column { text-align: right; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 All Data Records</h1>
+        
+        <div>
+            <a href="{% url 'form' %}" class="btn">➕ Add New Record</a>
+            <a href="{% url 'home' %}" class="btn">🏠 Go Home</a>
+        </div>
+        
+        {% if records %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Name Size (KB)</th>
+                        <th>Email</th>
+                        <th>Email Size (KB)</th>
+                        <th>Phone</th>
+                        <th>Phone Size (KB)</th>
+                        <th>File</th>
+                        <th>File Size (KB)</th>
+                        <th>Total Size (KB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.name }}</td>
+                        <td class="size-column">{{ record.name_size|floatformat:3 }}</td>
+                        <td>{{ record.email }}</td>
+                        <td class="size-column">{{ record.email_size|floatformat:3 }}</td>
+                        <td>{{ record.phone }}</td>
+                        <td class="size-column">{{ record.phone_size|floatformat:3 }}</td>
+                        <td>
+                            {% if record.file %}
+                                {{ record.file.name|slice:":20" }}...
+                            {% else %}
+                                No file
+                            {% endif %}
+                        </td>
+                        <td class="size-column">{{ record.file_size|floatformat:2 }}</td>
+                        <td class="size-column"><strong>{{ record.total_size|floatformat:2 }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                    
+                    <!-- Totals Row -->
+                    <tr class="totals-row">
+                        <td><strong>Total ({{ records|length }} records)</strong></td>
+                        <td class="size-column"><strong>{{ total_name_size|floatformat:3 }}</strong></td>
+                        <td></td>
+                        <td class="size-column"><strong>{{ total_email_size|floatformat:3 }}</strong></td>
+                        <td></td>
+                        <td class="size-column"><strong>{{ total_phone_size|floatformat:3 }}</strong></td>
+                        <td></td>
+                        <td class="size-column"><strong>{{ total_file_size|floatformat:2 }}</strong></td>
+                        <td class="size-column"><strong>{{ overall_total_size|floatformat:2 }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        {% else %}
+            <div class="empty">
+                <h2>No records yet!</h2>
+                <p><a href="{% url 'form' %}">Create the first record</a></p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

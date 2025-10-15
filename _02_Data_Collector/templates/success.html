@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Success!</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
+        .success-box { background: #d4edda; padding: 30px; border-radius: 10px; border: 1px solid #c3e6cb; }
+        .data-details { background: white; padding: 20px; border-radius: 5px; margin: 20px 0; text-align: left; }
+        .btn { display: inline-block; background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="success-box">
+        <h1>✅ Success!</h1>
+        <p>Your data has been saved successfully!</p>
+        
+        <div class="data-details">
+            <h3>Your Submission:</h3>
+            <p><strong>Name:</strong> {{ record.name }} ({{ record.name_size|floatformat:3 }} KB)</p>
+            <p><strong>Email:</strong> {{ record.email }} ({{ record.email_size|floatformat:3 }} KB)</p>
+            <p><strong>Phone:</strong> {{ record.phone }} ({{ record.phone_size|floatformat:3 }} KB)</p>
+            {% if record.file %}
+                <p><strong>File:</strong> {{ record.file.name }} ({{ record.file_size|floatformat:2 }} KB)</p>
+            {% endif %}
+            <p><strong>Total Size:</strong> {{ record.total_size|floatformat:2 }} KB</p>
+        </div>
+        
+        <div>
+            <a href="{% url 'form' %}" class="btn">➕ Add Another Record</a>
+            <a href="{% url 'show_data' %}" class="btn">📊 View All Data</a>
+        </div>
+    </div>
+</body>
+</html>
+
